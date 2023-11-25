@@ -1,5 +1,5 @@
 #run ROHan on individual BAM files #replace PCID/Name with individual ID 
-#here we are using 50kb windows and allowing 0.0005 heterozygous sites per ROH
+#here we are using 1Mb windows and allowing 0.0005 heterozygous sites per ROH
 /ROHan/src/rohan  --rohmu  5e-4  --tstv  2.016  --size  1000000  -o  /output/PCID_rohan  reference.fasta  Name.bam
 
 ## ROHan post processing ##
