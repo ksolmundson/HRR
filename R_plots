@@ -1,4 +1,7 @@
-#then make figures in R
+
+####  SECTION 1 - SCAFFOLD PLOTS ####
+
+#make figures in R through the command line 
 R
 
 #load heterozygosity files for scaffold of interest
@@ -22,3 +25,56 @@ theme_bw() +
   scale_color_manual(values=c('#8370bf','#EE7F7F', '#5C8944', '#175676')) +
   labs(y="Heterozygosity", x="Scaffold X") +
   ylim(0, 0.05)
+
+######################################################################################
+
+#### SECTION 2 - GENE-ONTOLOGY BARGRAPHS ####
+
+#download GO results as a table and open in R/RStudio 
+
+# Reorder the data frame so that "Unassigned" is the last category
+GO_BP <- GO_BP[order(GO_BP$Biological.Process != "Unassigned"), ]
+
+# Define a custom color palette
+custom_colors <- c("grey", "lightblue", "coral3",  "plum",  "darkseagreen4",  "darkgoldenrod4", "lightsalmon")
+
+
+# Create the bar plot with rotated x-axis labels and custom colors, and adjust the outer margins
+par(oma = c(6, 0, 0, 0))  # Adjust outer margins to move x-axis label down
+barplot(
+  GO_BP$Number.of.genes,
+  names.arg = GO_BP$Biological.Process,
+  main = "",
+  xlab = "",  # Remove default x-axis label
+  ylab = "Number of Genes",
+  las = 2,  # Rotate x-axis labels by 90 degrees
+  col = custom_colors  # Use custom colors
+)
+# Add the x-axis label below the plot
+mtext("Biological Process", side = 1, line = 9)
+
+
+## repeat with MF data
+
+# Reorder the data frame so that "Unassigned" is the last category
+GO_MF <- GO_MF[order(GO_MF$Molecular.Function != "Unassigned"), ]
+
+# Define a custom color palette
+custom_colors <- c("grey", "lightblue", "coral3",  "plum",  "darkseagreen4",  "darkgoldenrod4", "lightsalmon", "darkcyan", "darkorchid4")
+
+# Create the bar plot with rotated x-axis labels and custom colors, and adjust the outer margins
+par(oma = c(10, 0, 0, 0))  # Adjust outer margins to move x-axis label down
+barplot(
+  GO_MF$Number.of.genes,
+  names.arg = GO_MF$Molecular.Function,
+  main = "",
+  xlab = "",  # Remove default x-axis label
+  ylab = "Number of Genes",
+  las = 2,  # Rotate x-axis labels by 90 degrees
+  col = custom_colors  # Use custom colors
+)
+# Add the x-axis label below the plot
+mtext("Molecular Function", side = 1, line = 14)
+
+
+
