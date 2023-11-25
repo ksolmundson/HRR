@@ -1,0 +1,34 @@
+#run ROHan on individual BAM files #replace PCID/Name with individual ID 
+#here we are using 50kb windows and allowing 0.0005 heterozygous sites per ROH
+/ROHan/src/rohan  --rohmu  5e-4  --tstv  2.016  --size  1000000  -o  /output/PCID_rohan  reference.fasta  Name.bam
+
+## ROHan post processing ##
+
+#total number ROH for each individual 
+zcat PCID_rohan.mid.hmmrohl.gz | wc -l 
+
+
+#### Identify peaks of heterozygosity ###
+#first identify statistical threshold in R #calculate 99.9% percentile #combine all .hEst files
+
+R
+data <- read.delim("./rohan.hEst", header=TRUE)
+het = data$h     
+peak <- quantile(het, c(.999), na.rm=TRUE) 
+q()
+#use as threshold #here value of 0.015
+
+#in linux, filter rohan heterozygosity estimates (.hEst) to only have sites greater than threshold
+awk '$5>0.015' PCID_rohan.hEst > PCID_hetpeaks
+
+#remove NAs
+sed -i '/NA/d' ./PCID_hetpeaks
+#remove beginning of scaffolds
+awk '$2 == "0" { next } { print }' "PCID_hetpeaks" > "PCID_hetpeaks"
+
+  #examine file to determine scaffolds of interest
+
+#create het file for each individual / scaffold:
+  # #replace ID with individual ID
+awk '$1=="Scaffold${S}"' ./rohan_{ID}.hEst > rohan_{ID}_Scaffold${S}.txt
+#repeat with other individuals and for other scaffolds of interest
