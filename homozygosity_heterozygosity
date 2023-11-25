@@ -16,17 +16,17 @@ data <- read.delim("./rohan.hEst", header=TRUE)
 het = data$h     
 peak <- quantile(het, c(.999), na.rm=TRUE) 
 q()
-#use as threshold #here value of 0.015
+#threshold value #V
 
-#in linux, filter rohan heterozygosity estimates (.hEst) to only have sites greater than threshold
-awk '$5>0.015' PCID_rohan.hEst > PCID_hetpeaks
+#in linux, filter rohan heterozygosity estimates (.hEst) to only have sites greater than threshold - replace #V with threshold value above
+awk '$5>#V' PCID_rohan.hEst > PCID_hetpeaks
 
 #remove NAs
 sed -i '/NA/d' ./PCID_hetpeaks
 #remove beginning of scaffolds
 awk '$2 == "0" { next } { print }' "PCID_hetpeaks" > "PCID_hetpeaks"
 
-  #examine file to determine scaffolds of interest
+  #examine file to determine scaffolds of interest #remove any lines if the window is at the end of scaffold
 
 #create het file for each individual / scaffold:
   # #replace ID with individual ID
