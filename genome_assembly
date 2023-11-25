@@ -1,4 +1,4 @@
-## Part 1: raw reads --> mapped genomes 
+##raw reads --> mapped genomes 
 
 #copy out RG info from file header of raw reads
 zcat Name_R1.fastq.gz | head
